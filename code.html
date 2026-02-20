@@ -99,7 +99,7 @@
 <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
 <span class="material-symbols-outlined text-white text-[20px]">hub</span>
 </div>
-<span class="text-lg font-bold tracking-tight">Expeliarmus.</span>
+<span class="text-lg font-bold tracking-tight">LGE Digital Marketing</span>
 </div>
 <nav class="hidden md:flex space-x-8 text-sm font-medium">
 <a class="nav-link active flex items-center gap-2" href="#">
@@ -156,7 +156,7 @@
 <span class="material-symbols-outlined text-[18px]">filter_list</span> Filters
                 </button>
 <div class="bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm cursor-pointer hover:bg-gray-50">
-<span class="material-symbols-outlined text-[18px]">calendar_today</span> August 2022 - August 2023
+<span class="material-symbols-outlined text-[18px]">calendar_today</span> February 2025 - February 2026
                     <span class="material-symbols-outlined text-[16px]">expand_more</span>
 </div>
 <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2 shadow-sm shadow-blue-200">
@@ -394,6 +394,8 @@
 <th class="py-3 px-4 font-semibold">CTR</th>
 <th class="py-3 px-4 font-semibold">CONVERSION</th>
 <th class="py-3 px-4 font-semibold text-right">CPC</th>
+<th class="py-3 px-4 font-semibold">소재 메시지</th>
+<th class="py-3 px-4 font-semibold">AI 제안</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-gray-50 text-gray-600 font-medium text-xs">
@@ -405,6 +407,8 @@
 <td class="py-4 px-4">1.6%</td>
 <td class="py-4 px-4">128,989</td>
 <td class="py-4 px-4 text-right">$48.65</td>
+<td class="py-4 px-4"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md font-semibold">할인 강조 / 기능 중심</span></td>
+<td class="py-4 px-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-md font-bold">예산 증액 추천 (+15%)</span></td>
 </tr>
 <tr class="hover:bg-gray-50">
 <td class="py-4 pr-4 text-gray-900">Twitter Ads</td>
@@ -414,6 +418,8 @@
 <td class="py-4 px-4">1.4%</td>
 <td class="py-4 px-4">126,391</td>
 <td class="py-4 px-4 text-right">$40.00</td>
+<td class="py-4 px-4"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md font-semibold">라이프스타일 / 감성형</span></td>
+<td class="py-4 px-4"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded-md font-bold">타겟 조정 필요</span></td>
 </tr>
 <tr class="hover:bg-gray-50">
 <td class="py-4 pr-4 text-gray-900">Facebook Ads</td>
@@ -423,6 +429,8 @@
 <td class="py-4 px-4">0.6%</td>
 <td class="py-4 px-4">116,765</td>
 <td class="py-4 px-4 text-right">$39.53</td>
+<td class="py-4 px-4"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md font-semibold">프로모션 / 가격 소구</span></td>
+<td class="py-4 px-4"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md font-bold">고성과 - 예산 이전 추천</span></td>
 </tr>
 <tr class="hover:bg-gray-50">
 <td class="py-4 pr-4 text-gray-900">Tiktok Ads</td>
@@ -432,6 +440,8 @@
 <td class="py-4 px-4">0.4%</td>
 <td class="py-4 px-4">111,096</td>
 <td class="py-4 px-4 text-right">$29.33</td>
+<td class="py-4 px-4"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md font-semibold">기능 나열형 (저CTR)</span></td>
+<td class="py-4 px-4"><span class="bg-rose-100 text-rose-700 px-2 py-1 rounded-md font-bold">소재 교체 → 감성형 추천</span></td>
 </tr>
 </tbody>
 </table>
@@ -465,11 +475,38 @@
 </div>
 </div>
 </main>
-<button class="fab-button fixed bottom-8 right-8 bg-primary hover:bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-float z-50 focus:outline-none ring-4 ring-white">
+<button id="chatFabButton" class="fab-button fixed bottom-8 right-8 bg-primary hover:bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-float z-50 focus:outline-none ring-4 ring-white">
 <span class="material-symbols-outlined text-3xl">smart_toy</span>
 </button>
+<div id="chatPanel" class="hidden fixed bottom-8 right-8 w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-float border border-slate-200 z-50 overflow-hidden">
+<div class="bg-secondary text-white px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<div>
+<p class="text-sm font-semibold">Marketing AI Assistant</p>
+<p class="text-[10px] text-slate-300">Quick examples for dashboard insight</p>
+</div>
+</div>
+<button id="chatCloseButton" class="text-slate-300 hover:text-white">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div id="chatMessages" class="h-80 overflow-y-auto custom-scrollbar px-4 py-3 space-y-3 bg-slate-50">
+<div class="bg-white border border-slate-200 rounded-xl p-3 text-xs text-slate-600 shadow-sm max-w-[85%]">
+How can I help? Try asking: "Which channel has the best ROAS?"
+</div>
+</div>
+<div class="p-3 border-t border-slate-200 bg-white">
+<div class="flex items-center gap-2">
+<input id="chatInput" type="text" placeholder="Ask about CTR, ROAS, budget..." class="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"/>
+<button id="chatSendButton" class="bg-primary hover:bg-blue-600 text-white rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-1">
+Send <span class="material-symbols-outlined text-[16px]">send</span>
+</button>
+</div>
+</div>
+</div>
 <footer class="mt-8 text-center text-xs text-gray-400 pb-8">
-         © 2024 Global Marketing AI Dashboard. All data is confidential.
+         © 2026 Global Marketing AI Dashboard. All data is confidential.
     </footer>
 <script>
         // Common styles for charts

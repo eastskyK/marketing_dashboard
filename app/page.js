@@ -13,19 +13,13 @@ function getDashboardMarkup() {
 
   return bodyMatch[1]
     .replace('Visitor from websites', 'ROAS & CTR from websites')
-    .replace('Website visitor traffic and analytics', 'Example trend charts for marketing efficiency')
+    .replace('Website visitor traffic and analytics', 'Combined trend chart for marketing efficiency')
     .replace(
       /<div class="relative h-80 w-full">\s*<canvas id="visitorChart"><\/canvas>\s*<\/div>/,
       `
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-80 w-full">
-        <div class="bg-slate-50 rounded-lg border border-slate-100 p-3 flex flex-col">
-          <p class="text-xs font-semibold text-slate-600 mb-2">ROAS Trend</p>
-          <div class="relative flex-1 min-h-[220px]"><canvas id="roasChart"></canvas></div>
-        </div>
-        <div class="bg-slate-50 rounded-lg border border-slate-100 p-3 flex flex-col">
-          <p class="text-xs font-semibold text-slate-600 mb-2">CTR Trend</p>
-          <div class="relative flex-1 min-h-[220px]"><canvas id="ctrChart"></canvas></div>
-        </div>
+      <div class="bg-slate-50 rounded-lg border border-slate-100 p-3 h-80 w-full">
+        <p class="text-xs font-semibold text-slate-600 mb-2">ROAS + CTR Trend</p>
+        <div class="relative h-[285px]"><canvas id="performanceChart"></canvas></div>
       </div>
       `
     );
