@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Marketing AI Dashboard - Final View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2563EB", // Blueish primary from ref
+                        secondary: "#0F172A", 
+                        accent: "#8B5CF6", // Purple accent
+                        "bg-main": "#E8F1F5", // Light blue-grey background
+                        "card-bg": "#FFFFFF",
+                        "text-main": "#1E293B",
+                        "text-sub": "#64748B",
+                        "success": "#10B981", // Green
+                        "danger": "#EF4444", // Red
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem", // More rounded corners
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'float': '0 10px 30px -5px rgba(0, 0, 0, 0.15)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #E8F1F5;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 3px;
+        }
+        .nav-link {
+            position: relative;
+            color: #94A3B8;
+            transition: color 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #F8FAFC;
+        }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -22px;left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #F8FAFC;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+        }
+        .mini-bar {
+            width: 6px;
+            border-radius: 2px;
+            background-color: #E2E8F0;
+        }
+        .mini-bar.active {
+            background-color: currentColor;
+        }
+        .fab-button {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .fab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-bg-main text-text-main antialiased min-h-screen relative pb-20">
+<header class="bg-secondary text-white sticky top-0 z-50 shadow-md">
+<div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-6">
+<div class="flex justify-between items-center h-16">
+<div class="flex items-center space-x-12">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px]">hub</span>
+</div>
+<span class="text-lg font-bold tracking-tight">Expeliarmus.</span>
+</div>
+<nav class="hidden md:flex space-x-8 text-sm font-medium">
+<a class="nav-link active flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">dashboard</span> Dashboard
+                        </a>
+<a class="nav-link flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">analytics</span> Analytics
+                        </a>
+<a class="nav-link flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">lightbulb</span> Insight
+                        </a>
+<a class="nav-link flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">campaign</span> Campaigns
+                        </a>
+<a class="nav-link flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">group</span> Audience
+                        </a>
+</nav>
+</div>
+<div class="flex items-center space-x-6">
+<div class="relative hidden lg:block">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-gray-500 text-[18px]">search</span>
+</span>
+<input class="bg-[#1E293B] border-none text-sm rounded-lg block w-64 pl-10 p-2 text-gray-300 placeholder-gray-500 focus:ring-1 focus:ring-blue-500" placeholder="Search..." type="text"/>
+</div>
+<div class="flex items-center space-x-4 border-l border-gray-700 pl-6">
+<button class="text-gray-400 hover:text-white transition">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="text-gray-400 hover:text-white transition">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+<button class="text-gray-400 hover:text-white transition relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-secondary"></span>
+</button>
+<button class="flex items-center space-x-2 focus:outline-none">
+<img alt="User Avatar" class="h-8 w-8 rounded-full border border-gray-600" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGDDOUoXsXCfuQdpadWxhJPtgHINVneZAGhmZxsNFVL0NbTgCqTF46r99BdD-QXydfWW3IQwgYjJ8LDOhOOsxML7uR4piGoCf92_zpHuNfHIYMhCrvzvJltApqbeDn-kRXtQeEKVXT_IgdG14YfFUOvRCMjyBUnFI-Ab-G4YxnmsTiFp1evbw2kQ9rc6MuhHFgg2pX8HIj-yLm-X__ZKRP-5YIhfwSOhnNnHWsExgg-Fjrb1v3hJKz7VHtSoXwot_GM08V6sfN_Ak"/>
+</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-6 py-8 space-y-6">
+<div class="flex flex-col sm:flex-row justify-between items-end sm:items-center gap-4 mb-2">
+<div>
+<h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+<p class="text-sm text-gray-500 mt-1">Analyzing the patterns and trends of marketing traffic</p>
+</div>
+<div class="flex items-center space-x-3">
+<button class="bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">filter_list</span> Filters
+                </button>
+<div class="bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm cursor-pointer hover:bg-gray-50">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span> August 2022 - August 2023
+                    <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+<button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2 shadow-sm shadow-blue-200">
+<span class="material-symbols-outlined text-[18px]">cloud_download</span> Export report
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-card-bg rounded-xl shadow-soft p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-text-main font-semibold">Total Spend</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm cursor-pointer">more_horiz</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-3xl font-bold text-gray-900 mb-1">$5,550.00</p>
+</div>
+<div class="flex items-end space-x-1 h-8">
+<div class="mini-bar h-4 bg-gray-200"></div>
+<div class="mini-bar h-5 bg-gray-200"></div>
+<div class="mini-bar h-3 bg-gray-200"></div>
+<div class="mini-bar h-6 bg-gray-200"></div>
+<div class="mini-bar h-4 active text-orange-400"></div>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded">+2.5%</span>
+<span class="text-xs text-gray-500">Spend compared to last month</span>
+</div>
+</div>
+<div class="bg-card-bg rounded-xl shadow-soft p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-text-main font-semibold">Impressions</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm cursor-pointer">more_horiz</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-3xl font-bold text-gray-900 mb-1">2,216,869</p>
+</div>
+<div class="flex items-end space-x-1 h-8">
+<div class="mini-bar h-3 bg-gray-200"></div>
+<div class="mini-bar h-5 bg-gray-200"></div>
+<div class="mini-bar h-4 bg-gray-200"></div>
+<div class="mini-bar h-6 bg-gray-200"></div>
+<div class="mini-bar h-8 active text-blue-600"></div>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded">+12.5%</span>
+<span class="text-xs text-gray-500">Impressions compared to last month</span>
+</div>
+</div>
+<div class="bg-card-bg rounded-xl shadow-soft p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-text-main font-semibold">CTR</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm cursor-pointer">more_horiz</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-3xl font-bold text-gray-900 mb-1">2.45%</p>
+</div>
+<div class="flex items-end space-x-1 h-8">
+<div class="mini-bar h-4 bg-gray-200"></div>
+<div class="mini-bar h-3 bg-gray-200"></div>
+<div class="mini-bar h-6 bg-gray-200"></div>
+<div class="mini-bar h-4 bg-gray-200"></div>
+<div class="mini-bar h-5 active text-green-500"></div>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded">-0.3%</span>
+<span class="text-xs text-gray-500">Click-through rate vs last month</span>
+</div>
+</div>
+<div class="bg-card-bg rounded-xl shadow-soft p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-text-main font-semibold">ROAS</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm cursor-pointer">more_horiz</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-3xl font-bold text-gray-900 mb-1">1.68x</p>
+</div>
+<div class="flex items-end space-x-1 h-8">
+<div class="mini-bar h-3 bg-gray-200"></div>
+<div class="mini-bar h-6 bg-gray-200"></div>
+<div class="mini-bar h-4 bg-gray-200"></div>
+<div class="mini-bar h-5 bg-gray-200"></div>
+<div class="mini-bar h-7 active text-pink-400"></div>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded">+8.2%</span>
+<span class="text-xs text-gray-500">Return on ad spend vs last month</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="bg-card-bg rounded-xl shadow-soft p-6">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-lg font-bold text-gray-900">Visitor from websites</h3>
+<p class="text-xs text-gray-500">Website visitor traffic and analytics</p>
+</div>
+<a class="text-blue-600 text-sm font-medium hover:underline flex items-center" href="#">
+                        More details <span class="material-symbols-outlined text-sm ml-1">chevron_right</span>
+</a>
+</div>
+<div class="relative h-80 w-full">
+<canvas id="visitorChart"></canvas>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-card-bg rounded-xl shadow-soft p-6 flex flex-col justify-around space-y-4">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-medium text-gray-600">Facebook</span>
+<span class="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">+12.5%</span>
+</div>
+<p class="text-xl font-bold text-gray-900">216,869 <span class="text-xs font-normal text-gray-400">visitors</span></p>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-medium text-gray-600">Tiktok</span>
+<span class="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">+4.8%</span>
+</div>
+<p class="text-xl font-bold text-gray-900">978,342 <span class="text-xs font-normal text-gray-400">visitors</span></p>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-medium text-gray-600">Instagram</span>
+<span class="bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.5 rounded">-2.4%</span>
+</div>
+<p class="text-xl font-bold text-gray-900">567,323 <span class="text-xs font-normal text-gray-400">visitors</span></p>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-medium text-gray-600">Twitter</span>
+<span class="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">+3.75%</span>
+</div>
+<p class="text-xl font-bold text-gray-900">738,382 <span class="text-xs font-normal text-gray-400">visitors</span></p>
+</div>
+<div class="border-t border-gray-100 pt-4 mt-2">
+<a class="text-blue-600 text-sm font-medium hover:underline flex items-center" href="#">
+                            View details report <span class="material-symbols-outlined text-sm ml-1">chevron_right</span>
+</a>
+</div>
+</div>
+<div class="bg-card-bg rounded-xl shadow-soft p-6 relative">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-sm font-bold text-gray-900">Campaign activity</h3>
+<p class="text-[10px] text-gray-500">Check the campaign activity schedule</p>
+</div>
+<a class="text-blue-600 text-[10px] font-medium hover:underline flex items-center" href="#">
+                            More details <span class="material-symbols-outlined text-[10px] ml-1">chevron_right</span>
+</a>
+</div>
+<div class="relative h-64 text-xs text-gray-400">
+<div class="absolute left-0 top-0 h-full flex flex-col justify-between pr-2 text-[10px] font-medium border-r border-gray-100">
+<span>Sun</span>
+<span>Sat</span>
+<span>Fri</span>
+<span>Thu</span>
+<span>Wed</span>
+<span>Tue</span>
+<span>Mon</span>
+</div>
+<div class="absolute left-8 top-0 right-0 h-full">
+<div class="h-full w-full flex justify-between absolute top-0 left-0 -z-10 opacity-30">
+<div class="border-l border-dashed border-gray-200 h-full"></div>
+<div class="border-l border-dashed border-gray-200 h-full"></div>
+<div class="border-l border-dashed border-gray-200 h-full"></div>
+<div class="border-l border-dashed border-gray-200 h-full"></div>
+<div class="border-l border-dashed border-gray-200 h-full"></div>
+</div>
+<div class="absolute top-[16%] left-[40%] bg-blue-100 text-blue-700 px-2 py-1 rounded text-[9px] whitespace-nowrap flex items-center gap-1 shadow-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div> Lazada merchant powered event
+                            </div>
+<div class="absolute top-[32%] left-[60%] bg-green-100 text-green-700 px-2 py-1 rounded text-[9px] whitespace-nowrap flex items-center gap-1 shadow-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-green-500"></div> BiliBili merchant powered event
+                            </div>
+<div class="absolute top-[48%] left-[10%] bg-orange-100 text-orange-700 px-2 py-1 rounded text-[9px] whitespace-nowrap flex items-center gap-1 shadow-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-orange-500"></div> 12.12 Shopee selling event
+                            </div>
+<div class="absolute top-[64%] left-[70%] bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-[9px] whitespace-nowrap flex items-center gap-1 shadow-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-indigo-500"></div> Lazada merchant powered event
+                            </div>
+<div class="absolute top-[80%] left-[30%] bg-pink-100 text-pink-700 px-2 py-1 rounded text-[9px] whitespace-nowrap flex items-center gap-1 shadow-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-pink-500"></div> Tokopedia haul event
+                            </div>
+</div>
+<div class="absolute bottom-[-20px] left-8 w-full flex justify-between text-[9px] text-gray-400">
+<span>11:00</span>
+<span>14:00</span>
+<span>16:00</span>
+<span>18:00</span>
+<span>20:00</span>
+<span>22:00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-secondary rounded-xl shadow-lg p-6 flex flex-col md:flex-row items-center md:items-start gap-4 border border-gray-800">
+<div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-lg bg-gray-800 text-white animate-pulse">
+<span class="material-symbols-outlined text-3xl">smart_toy</span>
+</div>
+<div class="flex-grow w-full">
+<h4 class="text-blue-400 font-bold text-lg mb-1 flex items-center gap-2">AI Agent Recommendation <span class="bg-blue-900 text-blue-200 text-[10px] px-2 py-0.5 rounded-full border border-blue-700">New Insight</span></h4>
+<div class="flex flex-col md:flex-row items-center gap-4">
+<p class="text-gray-300 italic flex-grow text-sm border-l-2 border-blue-500 pl-3">
+                        "Current OLED TV ROAS in Germany is below target. Recommendation: Reallocate 15% budget from Italy Refrigerator emotional creatives to Germany OLED TV search ads."
+                    </p>
+<button class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg shadow-sm transition-colors text-sm whitespace-nowrap flex items-center gap-2">
+                        Execute AI Command <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 bg-card-bg rounded-xl shadow-soft p-6">
+<div class="mb-4">
+<h3 class="text-lg font-bold text-gray-900">Global Campaign Monitoring</h3>
+<p class="text-xs text-gray-500">Marketing data by many ads resources</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="text-xs text-gray-400 uppercase border-b border-gray-100">
+<tr>
+<th class="py-3 pr-4 font-semibold">SOURCE</th>
+<th class="py-3 px-4 font-semibold">IMPRESSION</th>
+<th class="py-3 px-4 font-semibold">COST</th>
+<th class="py-3 px-4 font-semibold">CLICKS</th>
+<th class="py-3 px-4 font-semibold">CTR</th>
+<th class="py-3 px-4 font-semibold">CONVERSION</th>
+<th class="py-3 px-4 font-semibold text-right">CPC</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-50 text-gray-600 font-medium text-xs">
+<tr class="hover:bg-gray-50">
+<td class="py-4 pr-4 text-gray-900">Google Ads</td>
+<td class="py-4 px-4">323,275,985</td>
+<td class="py-4 px-4">$556,983</td>
+<td class="py-4 px-4">199,858</td>
+<td class="py-4 px-4">1.6%</td>
+<td class="py-4 px-4">128,989</td>
+<td class="py-4 px-4 text-right">$48.65</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="py-4 pr-4 text-gray-900">Twitter Ads</td>
+<td class="py-4 px-4">224,493,946</td>
+<td class="py-4 px-4">$489,483</td>
+<td class="py-4 px-4">175,750</td>
+<td class="py-4 px-4">1.4%</td>
+<td class="py-4 px-4">126,391</td>
+<td class="py-4 px-4 text-right">$40.00</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="py-4 pr-4 text-gray-900">Facebook Ads</td>
+<td class="py-4 px-4">203,899,192</td>
+<td class="py-4 px-4">$450,338</td>
+<td class="py-4 px-4">140,950</td>
+<td class="py-4 px-4">0.6%</td>
+<td class="py-4 px-4">116,765</td>
+<td class="py-4 px-4 text-right">$39.53</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="py-4 pr-4 text-gray-900">Tiktok Ads</td>
+<td class="py-4 px-4">203,899,192</td>
+<td class="py-4 px-4">$300,000</td>
+<td class="py-4 px-4">98,550</td>
+<td class="py-4 px-4">0.4%</td>
+<td class="py-4 px-4">111,096</td>
+<td class="py-4 px-4 text-right">$29.33</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="bg-card-bg rounded-xl shadow-soft p-6 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-lg font-bold text-gray-900">Audience by location</h3>
+<p class="text-xs text-gray-500">View your audience data by it's location</p>
+</div>
+<select class="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5">
+<option>United States</option>
+<option>Europe</option>
+<option>Asia</option>
+</select>
+</div>
+<div class="relative w-full h-full rounded-lg overflow-hidden bg-blue-100 flex-grow min-h-[250px] border border-gray-200">
+<div class="absolute inset-0 opacity-40 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/2000px-World_map_blank_without_borders.svg.png')] bg-cover bg-center" style="filter: grayscale(100%) brightness(1.2);"></div>
+<div class="absolute inset-0 bg-green-50 opacity-30 mix-blend-multiply"></div>
+<div class="absolute top-[40%] left-[30%] w-16 h-16 bg-purple-500 bg-opacity-20 rounded-full flex items-center justify-center border border-purple-400">
+<span class="bg-purple-600 text-white text-[10px] px-1 rounded-full">125</span>
+</div>
+<div class="absolute top-[60%] left-[50%] w-24 h-24 bg-purple-600 bg-opacity-20 rounded-full flex items-center justify-center border border-purple-500 z-10">
+<div class="text-xs font-bold text-purple-900 bg-white bg-opacity-80 px-2 py-0.5 rounded shadow-sm">San Diego</div>
+</div>
+<div class="absolute top-[20%] left-[60%] w-10 h-10 bg-purple-500 bg-opacity-20 rounded-full flex items-center justify-center border border-purple-400">
+<span class="bg-purple-600 text-white text-[8px] px-1 rounded-full">45</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<button class="fab-button fixed bottom-8 right-8 bg-primary hover:bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-float z-50 focus:outline-none ring-4 ring-white">
+<span class="material-symbols-outlined text-3xl">smart_toy</span>
+</button>
+<footer class="mt-8 text-center text-xs text-gray-400 pb-8">
+         © 2024 Global Marketing AI Dashboard. All data is confidential.
+    </footer>
+<script>
+        // Common styles for charts
+        Chart.defaults.font.family = 'Inter';
+        Chart.defaults.font.size = 11;
+        Chart.defaults.color = '#94A3B8';
+        // Visitor Chart (Area with gradient)
+        const ctxVisitor = document.getElementById('visitorChart').getContext('2d');
+        // Create Gradient
+        const gradientVisitor = ctxVisitor.createLinearGradient(0, 0, 0, 300);
+        gradientVisitor.addColorStop(0, 'rgba(139, 92, 246, 0.4)'); // Purple top
+        gradientVisitor.addColorStop(0.5, 'rgba(59, 130, 246, 0.2)'); // Blue middle
+        gradientVisitor.addColorStop(1, 'rgba(59, 130, 246, 0.0)'); // Transparent bottom
+        const visitorChart = new Chart(ctxVisitor, {
+            type: 'line',
+            data: {
+                labels: ['12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov', '19 Nov', '20 Nov'],
+                datasets: [
+                    {
+                        label: 'Visitors',
+                        data: [15000, 22000, 18000, 38000, 28000, 32000, 48000, 25000, 35000],
+                        borderColor: '#6366F1', // Indigo 500
+                        backgroundColor: gradientVisitor,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#1E1B4B',
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 2,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#0F172A',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        padding: 10,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        border: { display: false },
+                        grid: {
+                            color: '#F1F5F9',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            stepSize: 10000,
+                            callback: function(value) {
+                                if (value === 0) return '0';
+                                return value / 1000 + 'k';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        border: { display: false }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
+        });
+    </script>
+
+</body></html>
